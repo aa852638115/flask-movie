@@ -1,0 +1,198 @@
+{% extends  'admin/layout.html' %}
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='layui/css/layui.css') }}">
+{% endblock %}
+{% block content %}
+        <section class="content-header">
+            <h1>微电影管理系统</h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 电影管理</a></li>
+                <li class="active">添加电影</li>
+            </ol>
+        </section>
+        <section class="content" id="showcontent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">添加电影</h3>
+                        </div>
+                        {% include 'admin/flash_msg.html' %}
+                        <form role="form" method="post"  enctype="multipart/form-data">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="input_title">片名</label>
+                                    <input type="text" class="form-control" id="input_title" placeholder="请输入片名！" value="{{form.data['title']|default('',True)}}" name="title">
+                            {% for err in form.title.errors %}
+                              <div class="col-md-12">
+                                <span style="color:red">{{ err }}</span>
+                             </div>
+                            {% endfor %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="input_url">文件</label>
+                                    <input  name="url" type="file" id="input_url">
+                                    <div style="margin-top:5px;">
+                                        <div id="moviecontainer"></div>
+                                    </div>
+                             {% for err in form.url.errors %}
+                              <div class="col-md-12">
+                                <span style="color:red">{{ err }}</span>
+                             </div>
+                            {% endfor %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="input_info">介绍</label>
+                                    <textarea  name="info" class="form-control" rows="10" id="input_info">{{form.data['info']|default('',True)}}</textarea>
+                            {% for err in form.info.errors %}
+                              <div class="col-md-12">
+                                <span style="color:red">{{ err }}</span>
+                             </div>
+                            {% endfor %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="input_logo">封面</label>
+                                    <input name="logo" type="file" id="input_logo" >
+                                    <img data-src="holder.js/262x166" style="margin-top:5px;" class="img-responsive"
+                                         alt="">
+                             {% for err in form.logo.errors %}
+                              <div class="col-md-12">
+                                <span style="color:red">{{ err }}</span>
+                             </div>
+                            {% endfor %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="input_star">星级</label>
+                                    <select  name="star" class="form-control" id="input_star">
+                                        {% for v in range(1,6) %}
+                                        {% if form.data['star'] == v %}
+                                        <option value="{{v}}" selected="selected">{{v}}星</option>
+                                        {% else %}
+                                        <option value="{{v}}" >{{v}}星</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                            {% for err in form.star.errors %}
+                              <div class="col-md-12">
+                                <span style="color:red">{{ err }}</span>
+                             </div>
+                            {% endfor %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="input_tag_id">标签</label>
+                                    <select   name="tag_id" class="form-control" id="input_tag_id">
+                                        {% for tag in tags %}
+                                        {% if form.data['tag_id'] == tag.id %}
+                                        <option selected value="{{tag.id}}">{{tag.name}}</option>
+                                        {% else %}
+                                         <option value="{{tag.id}}">{{tag.name}}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                             {% for err in form.tag_id.errors %}
+                              <div class="col-md-12">
+                                <span style="color:red">{{ err }}</span>
+                             </div>
+                            {% endfor %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="input_area">地区</label>
+                                    <input   name="area" type="text" class="form-control" id="input_area" placeholder="请输入地区！" value="{{form.data['area']|default('',True)}}">
+                             {% for err in form.area.errors %}
+                              <div class="col-md-12">
+                                <span style="color:red">{{ err }}</span>
+                             </div>
+                            {% endfor %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="input_length">片长</label>
+                                    <input  name="length" type="text" class="form-control" id="input_length" placeholder="请输入片长！" value="{{form.data['length']|default('',True)}}">
+                             {% for err in form.length.errors %}
+                              <div class="col-md-12">
+                                <span style="color:red">{{ err }}</span>
+                             </div>
+                            {% endfor %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="input_release_time">上映时间</label>
+                                    <input  name="release_time" type="text" class="form-control" id="input_release_time"
+                                           placeholder="请选择上映时间！" value="{{form.data['release_time']|default('',True)}}">
+                              {% for err in form.release_time.errors %}
+                              <div class="col-md-12">
+                                <span style="color:red">{{ err }}</span>
+                             </div>
+                            {% endfor %}
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                {{form.csrf_token}}
+                                <input value="添加" type="submit" class="btn btn-primary">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <div class="layui-progress">
+  <div class="layui-progress-bar" lay-percent="20%"></div>
+</div>
+
+
+{% endblock %}
+{% block script %}
+    <script>
+//注意进度条依赖 element 模块，否则无法进行正常渲染和功能性操作
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+<!--播放页面-->
+<script src="{{url_for('static',filename='jwplayer/jwplayer.js')}}"></script>
+<script type="text/javascript">
+    jwplayer.key = "P9VTqT/X6TSP4gi/hy1wy23BivBhjdzVjMeOaQ==";
+
+</script>
+<script type="text/javascript">
+    jwplayer("moviecontainer").setup({
+        flashplayer: "{{url_for('static',filename='jwplayer/jwplayer.flash.swf')}}",
+        playlist: [{
+            file: "{{url_for('static',filename='video/htpy.mp4')}}",
+            title: "环太平洋"
+        }],
+        modes: [{
+            type: "html5"
+        }, {
+            type: "flash",
+            src: "{{url_for('static',filename='jwplayer/jwplayer.flash.swf')}}"
+        }, {
+            type: "download"
+        }],
+        skin: {
+            name: "vapor"
+        },
+        "playlist.position": "left",
+        "playlist.size": 200,
+        height: 250,
+        width: 387,
+    });
+
+</script>
+<script>
+    $(document).ready(function(){
+        $('#input_release_time').datepicker({
+            autoclose: true,
+            format: 'yyyy-mm-dd',
+            language: 'zh-CN',
+        });
+    });
+
+</script>
+<script>
+    $(function () {
+        $('#g-3').addClass('active');
+        $('#g-3-1').addClass('active')
+    })
+</script>
+<script src="{{ url_for('static',filename='layui/layui.all.js') }}"></script>
+{% endblock %}
+

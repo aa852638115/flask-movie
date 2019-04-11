@@ -1,0 +1,29 @@
+{% extends 'home/layout.html' %}
+{% import 'common/search_page.html' as pg %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb" style="margin-top:6px;">
+                <li>与"{{ key }}"有关的电影，共{{ movies.total }}部</li>
+            </ol>
+        </div>
+        <div class="col-md-12">
+            {% for movie in movies.items %}
+            <div class="media">
+                <div class="media-left">
+                    <a href="{{url_for('home.video',id=movie.id,page=1)}}">
+                        <img class="media-object" src="{{ url_for('static',filename=movie.logo) }}" alt="{{ movie.title }}" width="262px">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ movie.title }}<a href="{{url_for('home.video',id=movie.id,page=1)}}" class="label label-primary pull-right"><span class="glyphicon glyphicon-play"></span>播放影片</a></h4>
+                    {{ movie.info }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-12 text-center">
+          {{ pg.render_pagination(movies,'home.search',key) }}
+        </div>
+    </div>
+{% endblock %}
