@@ -170,9 +170,11 @@ def add_moviecol():
     movie=Movie.query.filter_by(id=id).first()
     if not movie:
         result['data']=-1
+        return jsonify(result)
     moviecol_exists=MovieCol.query.filter_by(user_id=current_user.id,movie_id=id).first()
     if moviecol_exists:
         result['data']=0
+        return jsonify(result)
     with db.auto_commit():
         moviecol=MovieCol()
         moviecol.user_id=current_user.id
