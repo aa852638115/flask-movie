@@ -40,6 +40,9 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('home.index',page=1))
     form=UserRegisterForm(request.form)
+    if len(form.phone.data) > 11:
+        flash("手机号码过长",'err')
+        return render_template('home/register.html', form=form)
     if request.method=='POST' and form.validate():
         with db.auto_commit():
             user=User()

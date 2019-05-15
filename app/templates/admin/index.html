@@ -60,13 +60,13 @@
                         option.series[0].data[0].value = result['info'];
                         {#option.series[0].data[1].value = result['info'] + "%";#}
                         option.series[0].detail.formatter = result['info'] + "%";
-                        console.log(option.series[0].detail);
+
                         {#option.series[0].detail[0].value = result['info'] + "%";#}
 
                     }
                 });
                 myChart.setOption(option, true);
-            }, 1000);
+            }, 500);
 
 
         });

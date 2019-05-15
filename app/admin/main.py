@@ -22,7 +22,7 @@ def index():
 @admin_login_required
 @admin_auth
 def memory_info():
-    time.sleep(1)
+    time.sleep(0.5)
     info = psutil.virtual_memory().percent
     data = {
         'info':info
@@ -47,11 +47,13 @@ def login():
         else:
             flash('账户不存在或者账户与密码不匹配','err')
     return render_template('admin/login.html',form=form)
+
 @app.route('/logout')
 @admin_login_required
 def logout():
     session.pop('admin',None)
     return redirect(url_for('admin.login'))
+
 @app.route('/pwd',methods=['GET','POST'])
 @admin_login_required
 def pwd():

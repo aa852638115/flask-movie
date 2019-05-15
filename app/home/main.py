@@ -82,6 +82,7 @@ def play(id,page=None):
         thread.start()
         return redirect(url_for('home.play', id=form.movie_id.data,page=page))
     return render_template('home/play.html',movie=movie,form=form,comments=comments)
+
 # 弹幕逻辑
 @app.route('/video/<int:id>/<int:page>',methods=['GET','POST'])
 def video(id,page=None):
