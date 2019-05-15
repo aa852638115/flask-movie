@@ -1,6 +1,6 @@
 import uuid
 
-from flask import render_template, url_for, redirect, request, flash
+from flask import render_template, url_for, redirect, request, flash,session
 
 from app import db
 from app.libs.redprint import RedPrint
@@ -22,6 +22,7 @@ def login():
             return redirect(url_for('home.login'))
         login_user(user)
         Userlog()
+        session['name'] = user.name
         url = request.args.get('next')
         if not url or not url.startswith('/'):
             # 如果next被恶意修改，导致重定向攻击，此时可以判断 url的第一个字符是否是 '/'
@@ -32,6 +33,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    session.pop("name", None)
     return redirect(url_for('home.login'))
 @app.route('/register',methods=['GET','POST'])
 def register():

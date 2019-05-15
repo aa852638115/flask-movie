@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, request, flash, session
+from flask import render_template, redirect, url_for, request, flash, session,jsonify
 
 from app import db
 from app.libs.login import admin_login_required,admin_auth
@@ -17,6 +17,17 @@ app=RedPrint()
 def index():
     info = psutil.virtual_memory().percent
     return render_template('admin/index.html',info=info)
+
+@app.route('/memory_info',methods=['GET'])
+@admin_login_required
+@admin_auth
+def memory_info():
+    info = psutil.virtual_memory().percent
+    data = {
+        'info':info
+    }
+    return jsonify(data)
+
 @app.route('/login',methods=['GET','POST'])
 def login():
     if 'admin' in session:

@@ -66,9 +66,12 @@
                     <a class="curlink" href="{{url_for('home.logout')}}"><span class="glyphicon glyphicon-log-out"></span>&nbsp;退出</a>
                 </li>
                 {% endif %}
-                <li>
-                    <a class="curlink" href="{{url_for('home.user')}}"><span class="glyphicon glyphicon-user"></span>&nbsp;会员</a>
+               {% if not session['name'] %}
+                   {% else %}
+                    <li>
+                    <a class="curlink" href="{{url_for('home.user')}}"><span class="glyphicon glyphicon-user"></span>&nbsp;{% if not session['name'] %}会员{% else %}{{ session['name'] }}{% endif %}</a>
                 </li>
+            {% endif %}
             </ul>
         </div>
         <!--导航-->
@@ -88,7 +91,7 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    ©&nbsp;2018&nbsp;www.guaosi.com
+                    ©&nbsp;2018&nbsp;xxxxxxx
                 </p>
             </div>
         </div>
