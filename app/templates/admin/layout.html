@@ -119,6 +119,15 @@
 <script src="{{url_for('static',filename='admin/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js')}}" charset="UTF-8"></script>
 {% block script %}
 {% endblock %}
+<script>
+              function del() {
+                  if(confirm("确实要删除吗？")){
+                      return true;
+                  }else {
+                      return false;
+                  }
 
+              }
+          </script>
 </body>
 </html>

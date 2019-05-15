@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, redirect, url_for, current_app
 from werkzeug.datastructures import CombinedMultiDict, MultiDict
-
+import os
 from app import db
 from app.libs.login import admin_login_required
 from app.libs.redprint import RedPrint
@@ -31,6 +31,7 @@ def preview_add():
 @app.route('/preview/list/<int:page>')
 @admin_login_required
 def preview_list(page=None):
+
     if page is None:
         page=1
     previews=Preview.query.order_by(Preview.addtime.desc()).paginate(page,per_page=current_app.config['ADMIN_PREVIEW_PAGE'])
@@ -41,6 +42,8 @@ def preview_list(page=None):
 def preview_del(id):
     preview=Preview.query.get_or_404(id)
     with db.auto_commit():
+
+        os.remove(current_app.config['UPLOADED_PATH'] + preview.logo)
         Oplog('删除预告:' + preview.title + ',id:' + str(preview.id))
         db.session.delete(preview)
         flash('预告删除成功~','ok')

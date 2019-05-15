@@ -8,7 +8,8 @@ from app.models.preview import Preview as PreviewModel
 class Preview(FlaskForm):
     id=IntegerField()
     title=StringField(validators=[DataRequired('预告标题必须填写'),length(min=1,max=150,message='预告标题长度为1~150之间')])
-    logo=FileField(validators=[FileRequired('预告图片必须上传'),FileAllowed(IMAGES, '图片格式不正确')])
+    logo=FileField(validators=[FileRequired('预告图片必须上传'),FileAllowed(IMAGES, '图片格式不正确')],render_kw={}
+    )
 class PreviewAddForm(Preview):
     def validate_title(self,field):
         preview=PreviewModel.query.filter_by(title=field.data).first()

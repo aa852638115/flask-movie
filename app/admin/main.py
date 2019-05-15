@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, flash, session,jsonify
-
+import time
 from app import db
 from app.libs.login import admin_login_required,admin_auth
 from app.libs.redprint import RedPrint
@@ -22,6 +22,7 @@ def index():
 @admin_login_required
 @admin_auth
 def memory_info():
+    time.sleep(1)
     info = psutil.virtual_memory().percent
     data = {
         'info':info

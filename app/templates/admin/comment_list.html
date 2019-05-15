@@ -42,7 +42,7 @@
                                         </span>
                                     </span>
                                     关于电影<a>《{{ comment.movie.title}}》</a>的评论：{{ comment.content }}
-                                    <br><a  href="{{ url_for('admin.comment_del',id=comment.id) }}" class="label label-danger pull-right">删除</a>
+                                    <br><a  href="{{ url_for('admin.comment_del',id=comment.id) }}" class="label label-danger pull-right" onclick="return del()">删除</a>
                                 </div>
                             </div>
                             {% endfor %}

@@ -30,7 +30,7 @@
                                     <label for="input_logo">预告封面</label>
                                     <input  name="logo" type="file" id="input_logo">
                                     <img src="{{url_for('static',filename=preview.logo)}}" data-src="holder.js/700x320" style="margin-top:5px;" class="img-responsive"
-                                         alt="">
+                                         alt="" id="img_up">
                             {% for err in form.logo.errors %}
                               <div class="col-md-12">
                                 <span style="color:red">{{ err }}</span>
@@ -53,6 +53,20 @@
     $(function () {
         $('#g-4').addClass('active');
         $('#g-4-1').addClass('active')
-    })
+    });
+    $('#input_logo').on('change', function () {//当chooseImage的值改变时，执行此函数
+            var filePath = $(this).val(), //获取到input的value，里面是文件的路径
+                fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase(),
+                src = window.URL.createObjectURL(this.files[0]); //转成可以在本地预览的格式
+
+            // 检查是否是图片
+            if (!fileFormat.match(/.png|.jpg|.jpeg/)) {
+                error_prompt_alert('上传错误,文件格式必须为：png/jpg/jpeg');
+                return;
+            } else {
+                $('#img_up').css('display', 'block');
+                $('#img_up').attr('src', src);
+            }
+        });
 </script>
 {% endblock %}
