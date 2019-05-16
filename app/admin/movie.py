@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, current_app, redirect, url_for
 from werkzeug.datastructures import CombinedMultiDict, MultiDict
-
+import os
 from app import db
 from app.libs.login import admin_login_required
 from app.libs.redprint import RedPrint
@@ -50,6 +50,8 @@ def movie_list(page=None):
 @admin_login_required
 def movie_del(id):
     movie=Movie.query.get_or_404(id)
+    os.remove(current_app.config['UPLOADED_PATH'] + movie.logo)
+    os.remove(current_app.config['UPLOADED_PATH'] + movie.url)
     with db.auto_commit():
         Oplog('删除电影:' + movie.title + ',id:' + str(movie.id))
         db.session.delete(movie)
