@@ -18,15 +18,15 @@ with app.app_context():
         if not admin_exists:
             admin = Admin()
             admin.name = 'admin'
-            admin.pwd = 'a123654'
+            admin.pwd = '123456'
             admin.is_super=AdminTypeEnum.IS_SUPER
             db.session.add(admin)
     for v in range(1, 4):
         with db.auto_commit():
             user=User()
-            user.name='guaosi'+str(v)
+            user.name='test'+str(v)
             user.pwd='a123654'
-            user.email='guaosi'+str(v)+'@guaosi.com'
+            user.email='test'+str(v)+'@test.com'
             user.phone='1234567891'+str(v)
             user.info='这是个人简介'
             user.face='avatar/'+str(v)+'.jpg'

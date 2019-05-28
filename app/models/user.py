@@ -32,7 +32,8 @@ class User(BaseModel,UserMixin):
     @staticmethod
     def verify(name,pwd):
         user=User.query.filter_by(name=name).first()
-        if not user and not check_password_hash(pwd,User._pwd):
+        if not user or not check_password_hash(user._pwd,pwd):
+            print(check_password_hash(pwd,user._pwd))
             return False
         return user
 
